@@ -1,0 +1,21 @@
+{
+  "name": "Mouhous Ibtissem – Legal Consultancy",
+  "short_name": "Ibtissem Law",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0B1F3A",
+  "theme_color": "#C9A646",
+  "description": "The official website for Mouhouss Ibtissem, a legal consultant and international arbitrator.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
