@@ -1,5 +1,5 @@
 {
-  "name": "mouhouss-ibtissem---legal-consultancy",
+  "name": "copy-of--الموقع-الرسمي-للمحامي-سايج-محمد",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,9 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.4"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "@google/genai": "latest"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

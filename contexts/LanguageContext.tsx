@@ -1,42 +1,52 @@
+import React, { createContext, useContext, useEffect, ReactNode } from 'react';
+import { translations } from '../translations';
 
-import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { Language } from '../types';
+type Language = 'ar' | 'fr' | 'en';
 
 interface LanguageContextType {
   language: Language;
-  setLanguage: (language: Language) => void;
+  setLanguage: (lang: Language) => void;
+  t: (key: string) => any;
 }
 
-export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-interface LanguageProviderProps {
-  children: ReactNode;
-}
-
-export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>(Language.AR);
-
-  const handleSetLanguage = useCallback((lang: Language) => {
-    setLanguage(lang);
-    if (lang === Language.AR) {
-      document.documentElement.lang = 'ar';
-      document.documentElement.dir = 'rtl';
-    } else if (lang === Language.FR) {
-        document.documentElement.lang = 'fr';
-        document.documentElement.dir = 'ltr';
-    } else {
-      document.documentElement.lang = 'en';
-      document.documentElement.dir = 'ltr';
-    }
-  }, []);
+export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const language: Language = 'ar'; // Hardcode to Arabic
 
   useEffect(() => {
-    handleSetLanguage(Language.AR);
-  }, [handleSetLanguage]);
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  }, [language]); // Will run only once
+
+  const t = (key: string) => {
+    // Basic key-path navigation
+    const keys = key.split('.');
+    let result: any = translations[language];
+    try {
+      for (const k of keys) {
+        result = result[k];
+      }
+    } catch (error) {
+        return key;
+    }
+    return result || key;
+  };
+
+  // setLanguage is now a no-op function as language is fixed
+  const setLanguage = () => {};
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
+};
+
+export const useLanguage = (): LanguageContextType => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
+  return context;
 };

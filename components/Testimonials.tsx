@@ -1,74 +1,48 @@
+import React from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { QuoteIcon } from './icons';
 
-import React, { useState, useEffect } from 'react';
-import { useTranslations } from '../hooks/useTranslations';
+interface Testimonial {
+    name: string;
+    case_type: string;
+    quote: string;
+}
 
 const Testimonials: React.FC = () => {
-  const { t, getFontClass } = useTranslations();
-  const [currentIndex, setCurrentIndex] = useState(0);
+    const { t } = useLanguage();
+    const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 });
+    const testimonialsData: Testimonial[] = t('testimonials_data');
 
-  const testimonials = [
-    {
-      quote: t('testimonial_1'),
-      author: t('testimonial_1_author'),
-    },
-    {
-      quote: t('testimonial_2'),
-      author: t('testimonial_2_author'),
-    },
-  ];
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-    }, 5000); // Change testimonial every 5 seconds
-    return () => clearTimeout(timer);
-  }, [currentIndex, testimonials.length]);
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
-
-  return (
-    <section className={`py-20 bg-brand-blue/5 ${getFontClass()}`}>
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-brand-blue">{t('testimonials_title')}</h2>
-          <div className="w-24 h-1 bg-brand-gold mt-4 mx-auto"></div>
-        </div>
-        <div className="relative max-w-3xl mx-auto h-56">
-          {testimonials.map((testimonial, index) => (
+    return (
+        <section id="testimonials" className="py-20 bg-slate-100 overflow-hidden bg-dot-pattern">
             <div
-              key={index}
-              className={`absolute w-full h-full transition-opacity duration-700 ease-in-out ${
-                index === currentIndex ? 'opacity-100' : 'opacity-0'
-              }`}
+                ref={ref}
+                className={`container mx-auto px-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
             >
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <p className="text-xl italic text-brand-blue/80">
-                  {testimonial.quote}
-                </p>
-                <p className="mt-4 font-bold text-brand-gold text-lg">
-                  &mdash; {testimonial.author}
-                </p>
-              </div>
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold text-slate-800 mb-4">{t('testimonials_title')}</h2>
+                    <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                        {t('testimonials_description')}
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {testimonialsData.map((testimonial, index) => (
+                        <div key={index} className="bg-white p-8 rounded-lg shadow-lg flex flex-col border border-slate-200 card-glow">
+                            <QuoteIcon className="w-10 h-10 text-teal-400 mb-4" />
+                            <p className="text-slate-600 italic leading-relaxed mb-6 flex-grow">
+                                "{testimonial.quote}"
+                            </p>
+                            <div className="mt-auto">
+                                <p className="font-bold text-slate-800 text-lg">{testimonial.name}</p>
+                                <p className="text-sm text-slate-500">{testimonial.case_type}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
-          ))}
-        </div>
-        <div className="flex justify-center mt-6 space-x-2">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentIndex ? 'bg-brand-gold' : 'bg-brand-blue/20'
-              }`}
-              aria-label={`Go to testimonial ${index + 1}`}
-            ></button>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+        </section>
+    );
 };
 
 export default Testimonials;

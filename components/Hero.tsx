@@ -1,47 +1,46 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useTranslations } from '../hooks/useTranslations';
+import { useLanguage } from '../contexts/LanguageContext';
+import { ArrowLeftIcon, ArrowRightIcon } from './icons';
 
 const Hero: React.FC = () => {
-  const { t, getFontClass } = useTranslations();
+  const { t, language } = useLanguage();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+      });
+    }
+  };
 
   return (
-    <section className={`relative hero-bg text-white ${getFontClass()}`}>
-      <div className="absolute inset-0 bg-brand-blue opacity-80"></div>
-      <div className="relative container mx-auto px-6 py-24 md:py-32 flex flex-col md:flex-row items-center">
-        <div className="md:w-3/5 text-center md:text-start rtl:md:text-right">
-          <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-            {t('hero_title')}
-          </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto md:mx-0">
-            {t('hero_subtitle')}
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 rtl:sm:space-x-reverse">
-            <Link
-              to="/consultations"
-              className="bg-brand-gold text-brand-blue font-bold py-3 px-8 rounded-lg hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              {t('hero_cta_consult')}
-            </Link>
-            <Link
-              to="/contact"
-              className="bg-transparent border-2 border-brand-gold text-brand-gold font-bold py-3 px-8 rounded-lg hover:bg-brand-gold hover:text-brand-blue transition-all duration-300 shadow-lg"
-            >
-              {t('hero_cta_contact')}
-            </Link>
-          </div>
-        </div>
-        <div className="md:w-2/5 mt-12 md:mt-0 flex justify-center">
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
-                 <div className="absolute inset-0 border-4 border-brand-gold rounded-full transform rotate-45"></div>
-                 <img 
-                    src="https://i.ibb.co/7j29x7M/professional-avatar.jpg" 
-                    alt="Mouhouss Ibtissem" 
-                    className="relative w-full h-full object-cover rounded-full shadow-2xl"
-                />
-            </div>
-        </div>
+    <section 
+      id="hero"
+      className="relative bg-cover bg-center text-white py-40 px-6"
+      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1589216532372-1c2a367902d9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+      <div className="relative container mx-auto text-center z-10">
+        <h1 className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
+          {t('hero_title')}
+        </h1>
+        <p className="text-xl md:text-2xl mb-8 font-light text-gray-200">
+          {t('hero_subtitle')}
+        </p>
+        <p className="text-lg md:text-xl mb-12 max-w-3xl mx-auto text-gray-300">
+          {t('hero_description')}
+        </p>
+        <a 
+          href="#contact" 
+          onClick={(e) => handleNavClick(e, '#contact')}
+          className="bg-teal-500 hover:bg-teal-600 text-white font-bold py-4 px-10 rounded-lg text-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-lg shadow-teal-500/30 inline-flex items-center justify-center gap-3"
+        >
+          <span>{t('hero_cta')}</span>
+          {language === 'ar' ? <ArrowLeftIcon className="w-6 h-6" /> : <ArrowRightIcon className="w-6 h-6" />}
+        </a>
       </div>
     </section>
   );

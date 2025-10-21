@@ -1,101 +1,51 @@
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import ErrorDisplay from './components/ErrorDisplay';
+import { translations } from './translations';
 
-const InstallPrompt: React.FC = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [visible, setVisible] = useState(false);
-  const [language, setLanguage] = useState<"ar" | "fr" | "en">("ar");
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Could not find root element to mount to");
+}
+const root = ReactDOM.createRoot(rootElement);
 
-  const translations = {
-    ar: {
-      title: "📲 هل ترغب في تثبيت موقع موحوس ابتسام كتطبيق على هاتفك؟",
-      install: "نعم، ثبّت الآن",
-      later: "لاحقًا",
-    },
-    fr: {
-      title: "📲 Souhaitez-vous installer le site de Mouhous Ibtissem comme application ?",
-      install: "Installer maintenant",
-      later: "Plus tard",
-    },
-    en: {
-      title: "📲 Would you like to install Mouhous Ibtissem Legal Consultancy as an app?",
-      install: "Install now",
-      later: "Later",
-    },
-  };
-
-  useEffect(() => {
-    const lang = document.documentElement.lang as "ar" | "fr" | "en";
-    setLanguage(lang || "ar");
-
-    const seen = localStorage.getItem("installPromptDismissed");
-    if (seen) return;
-
-    window.addEventListener("beforeinstallprompt", (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setTimeout(() => setVisible(true), 5000); // يظهر بعد 5 ثواني
-    });
-  }, []);
-
-  const handleInstall = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setVisible(false);
-      localStorage.setItem("installPromptDismissed", "true");
-    }
-  };
-
-  const handleLater = () => {
-    setVisible(false);
-    localStorage.setItem("installPromptDismissed", "true");
-  };
-
-  if (!visible) return null;
-  const t = translations[language];
-
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white text-gray-800 rounded-2xl shadow-xl p-6 max-w-md mx-4 text-center animate-fade-in">
-        <h2 className="text-lg font-semibold mb-4 font-cairo">{t.title}</h2>
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={handleInstall}
-            className="bg-brand-gold text-white px-4 py-2 rounded-lg hover:bg-yellow-500 transition font-cairo"
-          >
-            {t.install}
-          </button>
-          <button
-            onClick={handleLater}
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition font-cairo"
-          >
-            {t.later}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+const getApiKey = (): string | undefined => {
+  // Prioritize the key injected by Netlify for the live site
+  if ((window as any).GEMINI_API_KEY && (window as any).GEMINI_API_KEY.startsWith('AIza')) {
+    return (window as any).GEMINI_API_KEY;
+  }
+  // Fallback key for local/preview environment (like AI Studio)
+  return "AIzaSyDQBXT3beWMHm21zo8Rvk0tYf7noxj4OPs";
 };
 
-// أنيميشن بسيطة
-const style = document.createElement("style");
-style.innerHTML = `
-@keyframes fade-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-.animate-fade-in {
-  animation: fade-in 0.3s ease-in-out;
-}`;
-document.head.appendChild(style);
+// This function attempts to render the app.
+// It will be called after the entire page is loaded to ensure Netlify's script injection has run.
+const initializeApp = () => {
+  const apiKey = getApiKey();
+  
+  if (apiKey && apiKey.startsWith('AIza')) {
+    // If key exists and looks valid, render the main app
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  } else {
+    // If the key is missing or invalid, render a helpful error page
+    const lang = (document.documentElement.lang || 'ar') as 'ar' | 'fr' | 'en';
+    root.render(
+      <React.StrictMode>
+        <ErrorDisplay 
+            title={translations[lang].error_title}
+            message_p1={translations[lang].error_message_p1}
+            message_p2={translations[lang].error_message_p2}
+        />
+      </React.StrictMode>
+    );
+  }
+};
 
-// التطبيق الرئيسي + نافذة التثبيت
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-    <InstallPrompt />
-  </React.StrictMode>
-);
+// Wait for the entire page to load, including Netlify's injected script.
+// This is the most robust way to avoid the race condition that causes a white screen.
+window.addEventListener('load', initializeApp);
