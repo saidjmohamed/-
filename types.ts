@@ -13,6 +13,9 @@ export interface WilayaData {
   code_wilaya: string;
   majlis_qadaa: string;
   baladiyat: Baladiya[];
+  mahkama_idaria?: string;
+  ikhtissas_idari?: string;
+  mahkama_tidjaria?: string;
 }
 
 export interface Suggestion {
