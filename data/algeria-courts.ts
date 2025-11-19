@@ -1,3 +1,4 @@
+
 import type { WilayaData } from '../types';
 
 export const WILAYAS_DATA: WilayaData[] = [
@@ -486,7 +487,7 @@ export const WILAYAS_DATA: WilayaData[] = [
       { "baladiya": "جبالة", "mahkama_mokhtassa": "محكمة ندرومة", "adresse": "وسط مدينة ندرومة" },
       { "baladiya": "عين الكبيرة", "mahkama_mokhtassa": "محكمة ندرومة", "adresse": "وسط مدينة ندرومة" },
       { "baladiya": "عين فتاح", "mahkama_mokhtassa": "محكمة ندرومة", "adresse": "وسط مدينة ندرومة" },
-      { "baladiya": "دار يغمراسن", "mahkama_mokhtassa": "محكمة ندرومة", "adresse": "وسط مدينة ندرومة" },
+      { "baladiya": " دار يغمراسن", "mahkama_mokhtassa": "محكمة ندرومة", "adresse": "وسط مدينة ندرومة" },
       { "baladiya": "باب العسة", "mahkama_mokhtassa": "محكمة باب العسة", "adresse": "وسط مدينة باب العسة" },
       { "baladiya": "السواني", "mahkama_mokhtassa": "محكمة باب العسة", "adresse": "وسط مدينة باب العسة" },
       { "baladiya": "مرسى بن مهيدي", "mahkama_mokhtassa": "محكمة باب العسة", "adresse": "وسط مدينة باب العسة" },
@@ -887,7 +888,7 @@ export const WILAYAS_DATA: WilayaData[] = [
       { "baladiya": "سيدي مزغيش", "mahkama_mokhtassa": "محكمة الحروش", "adresse": "وسط مدينة الحروش" },
       { "baladiya": "مجاز الدشيش", "mahkama_mokhtassa": "محكمة الحروش", "adresse": "وسط مدينة الحروش" },
       { "baladiya": "بني ولبان", "mahkama_mokhtassa": "محكمة الحروش", "adresse": "وسط مدينة الحروش" },
-      { "baladiya": "عين بوزيان", "mahkama_mokhtassa": "محكمة الحروش", "adresse": "وسط مدينة الحروش" },
+      { "baladiya": "عين بويزيان", "mahkama_mokhtassa": "محكمة الحروش", "adresse": "وسط مدينة الحروش" },
       { "baladiya": "صالح بو الشعور", "mahkama_mokhtassa": "محكمة الحروش", "adresse": "وسط مدينة الحروش" },
       { "baladiya": "تمالوس", "mahkama_mokhtassa": "محكمة تمالوس", "adresse": "وسط مدينة تمالوس" },
       { "baladiya": "عين قشرة", "mahkama_mokhtassa": "محكمة تمالوس", "adresse": "وسط مدينة تمالوس" },
@@ -1082,7 +1083,7 @@ export const WILAYAS_DATA: WilayaData[] = [
       { "baladiya": "عزيز", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
       { "baladiya": "مفتاحة", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
       { "baladiya": "أم الجليل", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
-      { "baladiya": "السائق", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
+      { "baladiya": "السانق", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
       { "baladiya": "بوغزول", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
       { "baladiya": "دراق", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
       { "baladiya": "بوعيش", "mahkama_mokhtassa": "محكمة قصر البخاري", "adresse": "وسط مدينة قصر البخاري" },
@@ -1769,4 +1770,7 @@ export const WILAYAS_DATA: WilayaData[] = [
       { "baladiya": "الحساسنة", "mahkama_mokhtassa": "محكمة حمام بوحجر", "adresse": "وسط مدينة حمام بوحجر" },
       { "baladiya": "وادي برقش", "mahkama_mokhtassa": "محكمة حمام بوحجر", "adresse": "وسط مدينة حمام بوحجر" },
       { "baladiya": "تامزورة", "mahkama_mokhtassa": "محكمة حمام بوحجر", "adresse": "وسط مدينة حمام بوحجر" },
-      { "baladiya": "شنتوف", "mahkama_mokhtassa": "محكمة حمام بوحجر", "adresse": "وسط مدينة حمام بوحجر" },
+      { "baladiya": "شنتوف", "mahkama_mokhtassa": "محكمة حمام بوحجر", "adresse": "وسط مدينة حمام بوحجر" }
+    ]
+  }
+];
