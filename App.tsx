@@ -1,8 +1,10 @@
+
 import React, { useState, useMemo, useCallback } from 'react';
 import { WILAYAS_DATA } from './data/algeria-courts';
 import type { Suggestion, SearchResult } from './types';
 import SearchInput from './components/SearchInput';
 import ResultCard from './components/ResultCard';
+import JudicialTree from './components/JudicialTree';
 
 const normalizeArabic = (text: string) => {
   return text
@@ -14,6 +16,7 @@ const normalizeArabic = (text: string) => {
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedResult, setSelectedResult] = useState<SearchResult | null>(null);
+  const [activeTab, setActiveTab] = useState<'search' | 'guide'>('search');
 
   const suggestions = useMemo<Suggestion[]>(() => {
     if (searchQuery.length < 2) {
@@ -77,43 +80,74 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-[#f5f7fa] min-h-screen w-full flex flex-col items-center pt-6 sm:pt-12 px-4">
-      <header className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-[#004aad] to-[#007bff] pb-2">
+      <header className="text-center mb-8 w-full max-w-4xl">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-[#004aad] to-[#007bff] pb-2 leading-tight">
           الاختصاص الإقليمي للمحاكم الجزائرية
         </h1>
         <p className="text-base sm:text-lg text-gray-600 mt-2">
-          ابحث عن المحكمة المختصة لبلدية معينة
+          دليلك الشامل لمعرفة المحكمة المختصة لبلدية معينة
         </p>
+
+        <div className="flex justify-center mt-8 gap-4">
+           <button
+             onClick={() => setActiveTab('search')}
+             className={`px-6 py-2 rounded-full font-bold transition-all duration-300 ${
+               activeTab === 'search'
+                 ? 'bg-[#004aad] text-white shadow-lg scale-105'
+                 : 'bg-white text-gray-600 hover:bg-gray-100'
+             }`}
+           >
+             🔍 بحث عن بلدية
+           </button>
+           <button
+             onClick={() => setActiveTab('guide')}
+             className={`px-6 py-2 rounded-full font-bold transition-all duration-300 ${
+               activeTab === 'guide'
+                 ? 'bg-[#004aad] text-white shadow-lg scale-105'
+                 : 'bg-white text-gray-600 hover:bg-gray-100'
+             }`}
+           >
+             📚 دليل الهياكل
+           </button>
+        </div>
       </header>
 
-      <main className="w-full max-w-2xl">
-          {!selectedResult ? (
-            <div className="relative animate-fade-in">
-              <SearchInput
-                value={searchQuery}
-                onChange={handleSearchChange}
-                onSelect={handleSelectSuggestion}
-                suggestions={suggestions}
-                placeholder="مثلاً: تيزي وزو، بئر خادم، وهران..."
-                label="🔎 أدخل اسم البلدية"
-              />
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-6 animate-fade-in">
-              <ResultCard
-                result={selectedResult}
-              />
-              <button
-                onClick={handleNewSearch}
-                className="flex items-center gap-2 bg-[#004aad] text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-[#003b8a] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#004aad] focus:ring-opacity-50"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 110 2H4a1 1 0 01-1-1V4a1 1 0 011-1zm10.899 11.899a7.003 7.003 0 01-11.601-2.566 1 1 0 111.885-.666A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101z" clipRule="evenodd" />
-                </svg>
-                <span>بحث جديد</span>
-              </button>
-            </div>
-          )}
+      <main className="w-full max-w-4xl flex flex-col items-center min-h-[400px]">
+        {activeTab === 'search' ? (
+          <div className="w-full max-w-2xl">
+            {!selectedResult ? (
+              <div className="relative animate-fade-in">
+                <SearchInput
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onSelect={handleSelectSuggestion}
+                  suggestions={suggestions}
+                  placeholder="مثلاً: تيزي وزو، بئر خادم، وهران..."
+                  label="🔎 أدخل اسم البلدية"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-6 animate-fade-in">
+                <ResultCard
+                  result={selectedResult}
+                />
+                <button
+                  onClick={handleNewSearch}
+                  className="flex items-center gap-2 bg-[#004aad] text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-[#003b8a] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#004aad] focus:ring-opacity-50"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 110 2H4a1 1 0 01-1-1V4a1 1 0 011-1zm10.899 11.899a7.003 7.003 0 01-11.601-2.566 1 1 0 111.885-.666A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101z" clipRule="evenodd" />
+                  </svg>
+                  <span>بحث جديد</span>
+                </button>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="w-full animate-fade-in">
+            <JudicialTree />
+          </div>
+        )}
       </main>
       
       <footer className="mt-auto py-6 text-center text-gray-500 text-sm space-y-1">

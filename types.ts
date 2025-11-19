@@ -28,3 +28,13 @@ export type SearchResult = {
   wilaya: WilayaData;
   baladiya: Baladiya;
 };
+
+export interface DivisionCourt {
+  name: string;
+  municipalities: string[];
+}
+
+export interface DivisionCouncil {
+  judicial_council: string;
+  courts: DivisionCourt[];
+}
